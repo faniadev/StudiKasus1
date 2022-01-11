@@ -33,7 +33,7 @@ namespace EnrollmentServices.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<EnrollmentDto>> GetAllEnrollment()
         {
-            Console.WriteLine("--> Getting Platforms .....");
+            Console.WriteLine("--> Getting Enrollments .....");
             var results = _enrollment.GetAllEnrollment();
             //return results;
             return Ok(_mapper.Map<IEnumerable<EnrollmentDto>>(results));
