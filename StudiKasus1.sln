@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.810.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnrollmentServices", "EnrollmentServices\EnrollmentServices.csproj", "{89E611ED-19EE-49C8-BC29-597C3E010675}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentService", "PaymentService\PaymentService.csproj", "{3337F7B3-833D-4694-B293-929920820F95}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{89E611ED-19EE-49C8-BC29-597C3E010675}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89E611ED-19EE-49C8-BC29-597C3E010675}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89E611ED-19EE-49C8-BC29-597C3E010675}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89E611ED-19EE-49C8-BC29-597C3E010675}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3337F7B3-833D-4694-B293-929920820F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3337F7B3-833D-4694-B293-929920820F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3337F7B3-833D-4694-B293-929920820F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3337F7B3-833D-4694-B293-929920820F95}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C5F02640-84F3-407C-BFCA-914213DC4B70}
+	EndGlobalSection
+EndGlobal
