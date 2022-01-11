@@ -18,10 +18,10 @@ namespace EnrollmentServices.SyncDataServices.Http
             _httpClient = httpClient;
             _configuration = configuration;
         }
-        public async Task CreateEnrollmentInPayment(EnrollmentForCreateDto plat)
+        public async Task CreateEnrollmentInPayment(EnrollmentDto enrol)
         {
             var httpContent = new StringContent(
-                JsonSerializer.Serialize(plat),
+                JsonSerializer.Serialize(enrol),
                 Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(_configuration["PaymentService"],
                 httpContent);

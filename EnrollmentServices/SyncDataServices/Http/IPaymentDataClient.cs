@@ -6,6 +6,6 @@ namespace EnrollmentServices.SyncDataServices.Http
 {
     public interface IPaymentDataClient
     {
-        Task CreateEnrollmentInPayment(EnrollmentForCreateDto plat);
+        Task CreateEnrollmentInPayment(EnrollmentDto enrol);
     }
 }
