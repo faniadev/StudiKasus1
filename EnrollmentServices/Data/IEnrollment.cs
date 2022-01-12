@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EnrollmentServices.Models;
 
 namespace EnrollmentServices.Data
@@ -9,7 +10,7 @@ namespace EnrollmentServices.Data
         bool SaveChanges();
         IEnumerable<Enrollment> GetAllEnrollment();
         Enrollment GetEnrollmentById(int id);
-        void CreateEnrollment(Enrollment enrol);
+        Task<Enrollment> CreateEnrollment(Enrollment enrol);
 
     }
 }

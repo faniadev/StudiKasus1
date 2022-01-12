@@ -61,7 +61,7 @@ namespace EnrollmentServices.Controllers
         public async Task<ActionResult<EnrollmentDto>> CreateEnrollment(EnrollmentForCreateDto enrollmentForCreateDto)
         {
             var enrollmentModel = _mapper.Map<Models.Enrollment>(enrollmentForCreateDto);
-            _enrollment.CreateEnrollment(enrollmentModel);
+            await _enrollment.CreateEnrollment(enrollmentModel);
             _enrollment.SaveChanges();
 
             var enrollmentDto = _mapper.Map<EnrollmentDto>(enrollmentModel);

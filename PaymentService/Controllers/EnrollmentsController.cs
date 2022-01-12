@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PaymentService.Data;
+using PaymentService.Dtos;
 
 namespace PaymentService.Controllers
 {
@@ -21,13 +22,14 @@ namespace PaymentService.Controllers
             _mapper = mapper;
         }
 
-        // [HttpGet]
-        // public ActionResult<IEnumerable<EnrollmentReadDto>> GetEnrollments()
-        // {
-        //     Console.WriteLine("-->Ambil Enrollments dari PaymentsService");
-        //     var enrollmentItems = _repository.GetAllEnrollments();
-        //     return Ok(_mapper.Map<IEnumerable<EnrollmentReadDto>>(enrollmentItems));
-        // }
+        [HttpGet]
+        public ActionResult<IEnumerable<EnrollmentReadDto>> GetEnrollments()
+        {
+            Console.WriteLine("-->Ambil Enrollments dari PaymentsService");
+            var enrollmentItems = _repository.GetAllEnrollment();
+            return Ok(_mapper.Map<IEnumerable<EnrollmentReadDto>>(enrollmentItems));
+        }
+
 
         [HttpPost]
         public ActionResult TestIndboundConnection(){

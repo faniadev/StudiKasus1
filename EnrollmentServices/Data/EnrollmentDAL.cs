@@ -14,12 +14,20 @@ namespace EnrollmentServices.Data
         {
             _db = db;
         }
-        public void CreateEnrollment(Enrollment enrol)
+        public async Task<Enrollment> CreateEnrollment(Enrollment enrol)
         {
-            if(enrol==null){
-                throw new ArgumentNullException(nameof(enrol));
+        
+            try
+            {
+                _db.Enrollments.Add(enrol);
+                await _db.SaveChangesAsync();
+                return enrol;
             }
-            _db.Enrollments.Add(enrol);
+            catch (DbUpdateException dbEx)
+            {
+                throw new Exception($"Error: {dbEx.Message}");
+            }
+       
         }
 
         public IEnumerable<Enrollment> GetAllEnrollment()
@@ -36,6 +44,7 @@ namespace EnrollmentServices.Data
         {
             return (_db.SaveChanges()>=0);
         }
+
 
         // public Task Delete(string id)
         // {
@@ -68,7 +77,7 @@ namespace EnrollmentServices.Data
 
         //     return result;
         // }
-       
+
 
         // public async Task<Enrollment> Insert(Enrollment obj)
         // {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PaymentService.Dtos
 {
-    public class EnrollmentublishedDto
+    public class EnrollmentPublishedDto
     {
         public int Id { get; set; } 
         public string Name { get; set; }
