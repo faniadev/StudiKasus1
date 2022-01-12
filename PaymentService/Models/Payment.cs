@@ -9,11 +9,10 @@ namespace PaymentService.Models
     public class Payment
     {
         [Key]
-        public int PaymentID { get; set; }
-        
+        public int PaymentID { get; set; }    
+        [Required]
         public int EnrollmentID { get; set; }
-        public int CourseID { get; set; }
-        public int StudentID { get; set; }
-        public double Price { get; set; }
+        public double TotalPrice { get; set; }
+        public Enrollment Enrollment { get; set; }
     }
 }
