@@ -52,7 +52,7 @@ namespace PaymentService.Controllers
             }
 
             [HttpPost]
-            public ActionResult<PaymentReadDto> CreatePaymentForEnrollment(int enrollmentId, PaymentCreateDto paymentDto)
+            public async Task<ActionResult<PaymentReadDto>> CreatePaymentForEnrollment(int enrollmentId, PaymentCreateDto paymentDto)
             {
                 Console.WriteLine($"--> CreatePaymentForEnrollment: {enrollmentId}");
                 if (!_repository.EnrollmentExist(enrollmentId))
@@ -61,9 +61,10 @@ namespace PaymentService.Controllers
                 }
 
                 var payment = _mapper.Map<Payment>(paymentDto);
-                _repository.CreatePayment(enrollmentId, payment);
+                await _repository.CreatePayment(enrollmentId, payment);
                 _repository.SaveChanges();
                 var paymentReadDto = _mapper.Map<PaymentReadDto>(payment);
+
 
                 return CreatedAtRoute(nameof(GetPaymentForEnrollment),
                 new { enrollmentId = enrollmentId, paymentId = paymentReadDto.Id }, paymentReadDto);

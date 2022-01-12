@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using PaymentService.Models;
 
 namespace PaymentService.Data
@@ -17,7 +18,7 @@ namespace PaymentService.Data
         //payment
         IEnumerable<Payment> GetPaymentsForEnrollment(int enrollmentid);
         Payment GetPayment(int enrollmentId,int paymentId);
-        void CreatePayment(int enrollmentId, Payment payment);
+        Task<Payment> CreatePayment(int enrollmentId, Payment payment);
 
     }
 }

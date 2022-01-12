@@ -8,12 +8,12 @@ namespace PaymentService.Models
     {
     [Key]
     [Required]
-    public int Id { get; set; }
+    public int EnrollmentID { get; set; }
 
-    [Required]
+    //[Required]
     public int ExternalID { get; set; }
 
-    [Required]
+    //[Required]
     public string Name { get; set; }
 
     public ICollection<Payment> Payments { get; set; } = 

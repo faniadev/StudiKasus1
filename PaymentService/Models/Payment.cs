@@ -10,7 +10,7 @@ namespace PaymentService.Models
     {
         [Key]
         public int PaymentID { get; set; }    
-        [Required]
+        //[Required]
         public int EnrollmentID { get; set; }
         public double TotalPrice { get; set; }
         public Enrollment Enrollment { get; set; }
