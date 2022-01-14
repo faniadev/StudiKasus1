@@ -36,5 +36,7 @@ namespace EnrollmentServices.SyncDataServices.Http
         }
     }
 }
+
+//ni kalo ke local-->"PaymentService":"http://localhost:24183/api/p/enrollments",
         
  

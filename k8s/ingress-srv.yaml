@@ -10,17 +10,17 @@ spec:
     - host: devbootcamp.com
       http:
         paths:
-          - path: /api/platforms
+          - path: /api/enrollments
             pathType: Prefix
             backend:
               service:
-                name: platforms-clusterip-srv
+                name: enrollments-clusterip-srv
                 port:
                   number: 80
-          - path: /api/c/platforms
+          - path: /api/p/platforms
             pathType: Prefix
             backend:
               service:
-                name: commands-clusterip-srv
+                name: payments-clusterip-srv
                 port:
                   number: 80
