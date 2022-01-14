@@ -12,6 +12,9 @@ namespace PaymentService.Models
         public int PaymentID { get; set; }    
         //[Required]
         public int EnrollmentID { get; set; }
+        public int CourseID { get; set; }
+        public int StudentID { get; set; }
+
         public double TotalPrice { get; set; }
         public Enrollment Enrollment { get; set; }
     }

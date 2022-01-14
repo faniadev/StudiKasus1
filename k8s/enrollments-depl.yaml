@@ -6,15 +6,15 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: enrollmentservice
+      app: enrollmentservices
   template:
     metadata:
       labels:
-        app: enrollmentservice
+        app: enrollmentservices
     spec:
       containers:
-      - name: enrollmentservice
-        image: faniadev/enrollmentservice:latest
+      - name: enrollmentservices
+        image: faniadev/enrollmentservices:latest
 ---
 apiVersion: v1
 kind: Service
@@ -23,9 +23,9 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: enrollmentservice
+    app: enrollmentservices
   ports:
-  - name: enrollmentservice
+  - name: enrollmentservices
     protocol: TCP
     port: 80
     targetPort: 80

@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using PaymentService.EventProcessing;
+//using PaymentService.EventProcessing;
 using Microsoft.OpenApi.Models;
 
 namespace PaymentService
@@ -32,7 +32,7 @@ namespace PaymentService
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddSingleton<IEventProcessor, EventProcessor>();
+            //services.AddSingleton<IEventProcessor, EventProcessor>();
             services.AddScoped<IPaymentRepo, PaymentRepo>();
 
             services.AddControllers();

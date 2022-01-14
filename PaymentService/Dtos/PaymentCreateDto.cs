@@ -8,10 +8,9 @@ namespace PaymentService.Dtos
 {
     public class PaymentCreateDto
     {
-        //[Required]
         public int EnrollmentID { get; set; }
-        //[Required]
-        public double TotalPrice { get; set; }
+        public int StudentID { get; set; }
+        public int CourseID { get; set; }
         
     }
 }

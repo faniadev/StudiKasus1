@@ -14,7 +14,9 @@ namespace PaymentService.Profiles
         {
             CreateMap<Enrollment,EnrollmentReadDto>();
             CreateMap<PaymentCreateDto,Payment>();
-            CreateMap<Payment,PaymentReadDto>();
+            CreateMap<Payment,PaymentReadDto>()
+            .ForMember(dest=>dest.TotalPrice,
+            opt=>opt.MapFrom(src=>Convert.ToDecimal(src.CourseID * 500000)));
             CreateMap<EnrollmentPublishedDto,Enrollment>()
             .ForMember(dest=>dest.ExternalID,
             opt=>opt.MapFrom(src=>src.Id));
