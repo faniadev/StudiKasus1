@@ -10,7 +10,7 @@ using AuthServices.Models;
 namespace AuthServices.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/a/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {

@@ -10,17 +10,24 @@ spec:
     - host: studikasus.com
       http:
         paths:
-          - path: /api/enrollments
+          - path: /
             pathType: Prefix
             backend:
               service:
                 name: enrollments-clusterip-srv
                 port:
                   number: 80
-          - path: /api/p/enrollments
+          - path: /
             pathType: Prefix
             backend:
               service:
                 name: payments-clusterip-srv
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: auths-clusterip-srv
                 port:
                   number: 80
