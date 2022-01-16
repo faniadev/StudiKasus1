@@ -9,8 +9,8 @@ using PaymentService.Data;
 namespace PaymentService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220112154918_InitialDB3")]
-    partial class InitialDB3
+    [Migration("20220116032028_initialdb")]
+    partial class initialdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,24 +20,6 @@ namespace PaymentService.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("PaymentService.Models.Enrollment", b =>
-                {
-                    b.Property<int>("EnrollmentID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ExternalID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("EnrollmentID");
-
-                    b.ToTable("Enrollments");
-                });
-
             modelBuilder.Entity("PaymentService.Models.Payment", b =>
                 {
                     b.Property<int>("PaymentID")
@@ -45,7 +27,13 @@ namespace PaymentService.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CourseID")
+                        .HasColumnType("int");
+
                     b.Property<int>("EnrollmentID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentID")
                         .HasColumnType("int");
 
                     b.Property<double>("TotalPrice")
@@ -53,25 +41,7 @@ namespace PaymentService.Migrations
 
                     b.HasKey("PaymentID");
 
-                    b.HasIndex("EnrollmentID");
-
                     b.ToTable("Payments");
-                });
-
-            modelBuilder.Entity("PaymentService.Models.Payment", b =>
-                {
-                    b.HasOne("PaymentService.Models.Enrollment", "Enrollment")
-                        .WithMany("Payments")
-                        .HasForeignKey("EnrollmentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Enrollment");
-                });
-
-            modelBuilder.Entity("PaymentService.Models.Enrollment", b =>
-                {
-                    b.Navigation("Payments");
                 });
 #pragma warning restore 612, 618
         }

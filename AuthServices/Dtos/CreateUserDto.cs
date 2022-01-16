@@ -1,5 +1,5 @@
 ﻿using System;
-namespace EnrollmentServices.Dtos
+namespace AuthServices.Dtos
 {
     public class CreateUserDto
     {

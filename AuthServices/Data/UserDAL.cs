@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using EnrollmentServices.Dtos;
-using EnrollmentServices.Helpers;
-using EnrollmentServices.Models;
+using AuthServices.Dtos;
+using AuthServices.Helpers;
+using AuthServices.Models;
 
-namespace EnrollmentServices.Data
+namespace AuthServices.Data
 {
     public class UserDAL : IUser
     {

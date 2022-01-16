@@ -16,6 +16,5 @@ namespace PaymentService.Models
         public int StudentID { get; set; }
 
         public double TotalPrice { get; set; }
-        public Enrollment Enrollment { get; set; }
     }
 }

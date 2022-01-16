@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using EnrollmentServices.Dtos;
-using EnrollmentServices.Models;
+using AuthServices.Dtos;
+using AuthServices.Models;
 
-namespace EnrollmentServices.Data
+namespace AuthServices.Data
 {
     public interface IUser
     {

@@ -8,7 +8,7 @@ using PaymentService.Models;
 
 namespace PaymentService.Data
 {
-    public class PaymentRepo : IPaymentRepo
+    public class PaymentRepo : IPaymentRepo<Payment>
     {
         private readonly ApplicationDbContext _context;
 
@@ -16,65 +16,31 @@ namespace PaymentService.Data
         {
             _context = context;
         }
-        public void CreateEnrollment(Enrollment enrol)
-        {
-            if(enrol==null)
-                throw new ArgumentNullException(nameof(enrol));
-            _context.Enrollments.Add(enrol); 
-        }
 
-        public async Task<Payment> CreatePayment(int enrollmentId, Payment payment)
+        public async Task<Payment> CreatePayment(Payment payment)
         {
-            // if(payment==null)
-            //     throw new ArgumentNullException(nameof(payment));
-            // payment.EnrollmentID = enrollmentId;
-            // _context.Payments.Add(payment);
-
             try
             {
-                payment.EnrollmentID = enrollmentId;
-                _context.Payments.Add(payment);
+                var result = await _context.Payments.AddAsync(payment);
                 await _context.SaveChangesAsync();
-                return payment;
+                return result.Entity;
             }
-            catch (DbUpdateException dbEx)
+            catch (System.Exception ex)
             {
-                throw new Exception($"Error: {dbEx.Message}");
+                throw new Exception($"Error: {ex.Message}");
             }
         }
 
-        public bool EnrollmentExist(int enrollmentid)
+        public async Task<Payment> GetPaymentByID(int id)
         {
-            return _context.Enrollments.Any(p=>p.EnrollmentID==enrollmentid);
+            var result = await _context.Payments.Where(e => e.PaymentID == id).AsNoTracking().SingleAsync();
+            return result;
         }
 
-        public bool ExternalEnrollmentExist(int externalEnrollmentId)
+        public async Task<IEnumerable<Payment>> GetPaymentsForEnrollment()
         {
-            return _context.Enrollments.Any(p=>p.ExternalID==externalEnrollmentId);
-        }
-
-        public IEnumerable<Enrollment> GetAllEnrollment()
-        {
-            return _context.Enrollments.ToList();
-        }
-
-        public Payment GetPayment(int enrollmentId, int paymentId)
-        {
-            return _context.Payments
-            .Where(c=>c.EnrollmentID==enrollmentId && c.PaymentID == paymentId)
-            .FirstOrDefault();
-        }
-
-        public IEnumerable<Payment> GetPaymentsForEnrollment(int enrollmentid)
-        {
-            return _context.Payments
-            .Where(c=>c.EnrollmentID==enrollmentid)
-            .OrderBy(c=>c.Enrollment.Name);
-        }
-
-        public bool SaveChanges()
-        {
-            return (_context.SaveChanges()>=0);
+            var result = await _context.Payments.AsNoTracking().ToListAsync();
+            return result;
         }
     }
 }

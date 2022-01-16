@@ -17,11 +17,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using EnrollmentServices.Data;
-using EnrollmentServices.Helpers;
-using EnrollmentServices.SyncDataServices.Http;
+using AuthServices.Data;
+using AuthServices.Helpers;
 
-namespace EnrollmentServices
+namespace AuthServices
 {
     public class Startup
     {
@@ -69,10 +68,7 @@ namespace EnrollmentServices
                 };
             });
 
-            services.AddScoped<IStudent, StudentDAL>();
-            services.AddScoped<ICourse, CourseDAL>();
-            services.AddScoped<IEnrollment, EnrollmentDAL>();
-            services.AddHttpClient<IPaymentDataClient,HttpPaymentDataClient>();
+            services.AddScoped<IUser, UserDAL>();
 
             //services.AddControllers().AddNewtonsoftJson(options =>
             //options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
@@ -82,7 +78,7 @@ namespace EnrollmentServices
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Enrollment Service", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AuthService", Version = "v1" });
                 var securitySchema = new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header menggunakan bearer token",
@@ -115,7 +111,7 @@ namespace EnrollmentServices
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Enrollment Service"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AuthService v1"));
 
             //app.UseHttpsRedirection();
 

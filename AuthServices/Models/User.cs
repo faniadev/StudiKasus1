@@ -1,5 +1,5 @@
 ﻿using System;
-namespace EnrollmentServices.Models
+namespace AuthServices.Models
 {
     public class User
     {

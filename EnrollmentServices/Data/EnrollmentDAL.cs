@@ -14,35 +14,56 @@ namespace EnrollmentServices.Data
         {
             _db = db;
         }
-        public async Task<Enrollment> CreateEnrollment(Enrollment enrol)
+
+        public Task Delete(string id)
         {
-        
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Enrollment>> GetAll()
+        {
+            var results = await _db.Enrollments.Include(e => e.Course).Include(e => e.Student).AsNoTracking().ToListAsync();
+            return results;
+        }
+
+
+        public async Task<Enrollment> GetById(string id)
+        {
+            var result = await (from c in _db.Enrollments
+                                where c.EnrollmentID == Convert.ToInt32(id)
+                                select c).SingleOrDefaultAsync();
+            if (result == null) throw new Exception($"data id {id} tidak ditemukan");
+
+            return result;
+        }
+
+        public Task<IEnumerable<Enrollment>> GetByName(string title)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Enrollment> Insert(Enrollment obj)
+        {
             try
             {
-                _db.Enrollments.Add(enrol);
+                _db.Enrollments.Add(obj);
                 await _db.SaveChangesAsync();
-                return enrol;
+                return obj;
             }
             catch (DbUpdateException dbEx)
             {
                 throw new Exception($"Error: {dbEx.Message}");
             }
-       
-        }
-
-        public IEnumerable<Enrollment> GetAllEnrollment()
-        {
-            return _db.Enrollments.ToList();
-        }
-
-        public Enrollment GetEnrollmentById(int id)
-        {
-            return _db.Enrollments.FirstOrDefault(p=>p.EnrollmentID==id);
         }
 
         public bool SaveChanges()
         {
             return (_db.SaveChanges()>=0);
+        }
+
+        public Task<Enrollment> Update(string id, Enrollment obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

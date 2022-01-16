@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 //using PaymentService.EventProcessing;
 using Microsoft.OpenApi.Models;
+using PaymentService.Models;
 
 namespace PaymentService
 {
@@ -31,9 +32,10 @@ namespace PaymentService
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             //services.AddSingleton<IEventProcessor, EventProcessor>();
-            services.AddScoped<IPaymentRepo, PaymentRepo>();
+            services.AddScoped<IPaymentRepo<Payment>, PaymentRepo>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

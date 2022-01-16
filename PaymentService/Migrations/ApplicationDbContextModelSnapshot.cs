@@ -18,24 +18,6 @@ namespace PaymentService.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("PaymentService.Models.Enrollment", b =>
-                {
-                    b.Property<int>("EnrollmentID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ExternalID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("EnrollmentID");
-
-                    b.ToTable("Enrollments");
-                });
-
             modelBuilder.Entity("PaymentService.Models.Payment", b =>
                 {
                     b.Property<int>("PaymentID")
@@ -57,25 +39,7 @@ namespace PaymentService.Migrations
 
                     b.HasKey("PaymentID");
 
-                    b.HasIndex("EnrollmentID");
-
                     b.ToTable("Payments");
-                });
-
-            modelBuilder.Entity("PaymentService.Models.Payment", b =>
-                {
-                    b.HasOne("PaymentService.Models.Enrollment", "Enrollment")
-                        .WithMany("Payments")
-                        .HasForeignKey("EnrollmentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Enrollment");
-                });
-
-            modelBuilder.Entity("PaymentService.Models.Enrollment", b =>
-                {
-                    b.Navigation("Payments");
                 });
 #pragma warning restore 612, 618
         }

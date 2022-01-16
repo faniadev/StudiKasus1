@@ -11,63 +11,55 @@ using PaymentService.Models;
 namespace PaymentService.Controllers
 {
     [ApiController]
-    [Route("api/p/enrollments/{enrollmentId}/[controller]")]
+    [Route("api/p/Payments")]
     public class PaymentsController : ControllerBase
     {
-       private readonly IPaymentRepo _repository;
+       private readonly IPaymentRepo<Payment> _repository;
             private readonly IMapper _mapper;
-            public PaymentsController(IPaymentRepo repository,
+            public PaymentsController(IPaymentRepo<Payment> repository,
             IMapper mapper)
             {
                 _repository = repository;
-                _mapper = mapper;
+                _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             }
 
             [HttpGet]
-            public ActionResult<IEnumerable<PaymentReadDto>> GetPaymentsForEnrollment(int enrollmentId)
+            public async Task<ActionResult<PaymentReadDto>> GetPaymentsForEnrollment()
             {
-                Console.WriteLine($"--> GetPaymentsForEnrollment: {enrollmentId}");
-                if (!_repository.EnrollmentExist(enrollmentId))
-                {
-                    return NotFound();
-                }
-                var payments = _repository.GetPaymentsForEnrollment(enrollmentId);
-                return Ok(_mapper.Map<IEnumerable<PaymentReadDto>>(payments));
+                var results = await _repository.GetPaymentsForEnrollment();
+                return Ok(_mapper.Map<IEnumerable<PaymentReadDto>>(results));
             }
 
             [HttpGet("{paymentId}", Name = "GetPaymentForEnrollment")]
-            public ActionResult<PaymentReadDto> GetPaymentForEnrollment(int enrollmentId, int paymentId)
+            public async Task <ActionResult<PaymentReadDto>> GetPaymentByID(int id)
             {
-                Console.WriteLine($"--> GetPaymentForEnrollment: {enrollmentId} / {paymentId}");
-                if (!_repository.EnrollmentExist(enrollmentId))
+                try
                 {
+                    var results = await _repository.GetPaymentByID(id);
+                    if (results == null)
                     return NotFound();
+                    return Ok(_mapper.Map<PaymentReadDto>(results));
                 }
-                var payment = _repository.GetPayment(enrollmentId, paymentId);
-                if (payment == null)
+                catch (System.Exception ex)
                 {
-                    return NotFound();
+                    return BadRequest(ex.Message);
                 }
-                return Ok(_mapper.Map<PaymentReadDto>(payment));
             }
 
             [HttpPost]
-            public async Task<ActionResult<PaymentReadDto>> CreatePaymentForEnrollment(int enrollmentId, PaymentCreateDto paymentDto)
+            public async Task<ActionResult<PaymentReadDto>> CreatePayment(PaymentCreateDto paymentCreateDto)
             {
-                Console.WriteLine($"--> CreatePaymentForEnrollment: {enrollmentId}");
-                if (!_repository.EnrollmentExist(enrollmentId))
+                try
                 {
-                    return NotFound();
+                    var paymentdtos = _mapper.Map<Payment>(paymentCreateDto);
+                    var result = await _repository.CreatePayment(paymentdtos);
+                    return Ok(_mapper.Map<PaymentReadDto>(result));
                 }
+                catch (System.Exception ex)
+                {
 
-                var payment = _mapper.Map<Payment>(paymentDto);
-                await _repository.CreatePayment(enrollmentId, payment);
-                _repository.SaveChanges();
-                var paymentReadDto = _mapper.Map<PaymentReadDto>(payment);
-
-
-                return CreatedAtRoute(nameof(GetPaymentForEnrollment),
-                new { enrollmentId = enrollmentId, paymentId = paymentReadDto.Id }, paymentReadDto);
+                    return BadRequest(ex.Message);
+                }
             } 
     }
 }

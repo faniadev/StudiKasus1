@@ -5,20 +5,13 @@ using PaymentService.Models;
 
 namespace PaymentService.Data
 {
-    public interface IPaymentRepo
+    public interface IPaymentRepo<T>
     {
-        bool SaveChanges();
-
-        //enrollment
-        IEnumerable<Enrollment> GetAllEnrollment();
-        void CreateEnrollment(Enrollment enrol);
-        bool EnrollmentExist(int enrollmentid);
-        bool ExternalEnrollmentExist(int externalEnrollmentId);
-
+  
         //payment
-        IEnumerable<Payment> GetPaymentsForEnrollment(int enrollmentid);
-        Payment GetPayment(int enrollmentId,int paymentId);
-        Task<Payment> CreatePayment(int enrollmentId, Payment payment);
+        Task<IEnumerable<T>> GetPaymentsForEnrollment();
+        Task<T> CreatePayment(T payment);
+        Task<T> GetPaymentByID(int id);
 
     }
 }

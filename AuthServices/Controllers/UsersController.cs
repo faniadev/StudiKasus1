@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using EnrollmentServices.Data;
-using EnrollmentServices.Dtos;
-using EnrollmentServices.Models;
+using AuthServices.Data;
+using AuthServices.Dtos;
+using AuthServices.Models;
 
-namespace EnrollmentServices.Controllers
+namespace AuthServices.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]

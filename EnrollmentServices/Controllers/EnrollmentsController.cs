@@ -8,6 +8,12 @@ using EnrollmentServices.Data;
 using EnrollmentServices.Dtos;
 using EnrollmentServices.Models;
 using EnrollmentServices.SyncDataServices.Http;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using Microsoft.Extensions.Options;
+using EnrollmentServices.Helpers;
+using System.Text;
 
 namespace EnrollmentServices.Controllers
 {
@@ -18,25 +24,27 @@ namespace EnrollmentServices.Controllers
     {
         private readonly IEnrollment _enrollment;
         private IMapper _mapper;
-        private readonly IPaymentDataClient _paymentDataClient;
+        private readonly AppSettings _appSettings;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public EnrollmentsController(IEnrollment enrollment, IMapper mapper, IPaymentDataClient paymentDataClient )
+        public EnrollmentsController(IEnrollment enrollment, IMapper mapper, IOptions<AppSettings> appSettings, IHttpClientFactory httpClientFactory  )
         {
             _enrollment = enrollment;
             _mapper = mapper;
-            _paymentDataClient = paymentDataClient;
+            _appSettings = appSettings.Value;
+            _httpClientFactory = httpClientFactory;
         }
 
         // GET: api/<EnrollmentsController>
 
         [Authorize(Roles = "admin,student")]
         [HttpGet]
-        public ActionResult<IEnumerable<EnrollmentDto>> GetAllEnrollment()
+        public async Task<IEnumerable<Enrollment>> GetAllEnrollment()
         {
             Console.WriteLine("--> Getting Enrollments .....");
-            var results = _enrollment.GetAllEnrollment();
+            var results = await _enrollment.GetAll();
             //return results;
-            return Ok(_mapper.Map<IEnumerable<EnrollmentDto>>(results));
+            return results;
             
             
         }
@@ -47,7 +55,7 @@ namespace EnrollmentServices.Controllers
         [HttpGet("{id}", Name = "GetEnrollmentById")]
         public ActionResult<EnrollmentDto> GetEnrollmentById(int id)
         {
-            var result = _enrollment.GetEnrollmentById(id);
+            var result = _enrollment.GetById(id.ToString());
             if (result == null)
                 return NotFound();
 
@@ -60,24 +68,50 @@ namespace EnrollmentServices.Controllers
         [HttpPost]
         public async Task<ActionResult<EnrollmentDto>> CreateEnrollment(EnrollmentForCreateDto enrollmentForCreateDto)
         {
-            var enrollmentModel = _mapper.Map<Models.Enrollment>(enrollmentForCreateDto);
-            await _enrollment.CreateEnrollment(enrollmentModel);
-            _enrollment.SaveChanges();
-
-            var enrollmentDto = _mapper.Map<EnrollmentDto>(enrollmentModel);
-
-            //send sync
             try
             {
-                await _paymentDataClient.CreateEnrollmentInPayment(enrollmentDto);
-            }
-            catch (Exception ex)
+            var enrollmentModel = _mapper.Map<Enrollment>(enrollmentForCreateDto);
+            var result = await _enrollment.Insert(enrollmentModel);
+            if (result != null)
             {
-                Console.WriteLine($"--> Could not send synchronously: {ex.Message}");
-            }
+                HttpClientHandler clientHandler = new HttpClientHandler();
+          clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
 
-            return CreatedAtRoute(nameof(GetEnrollmentById),
-            new { Id = enrollmentDto.EnrollmentID }, enrollmentDto);
+          using (var client = new HttpClient(clientHandler))
+          {
+            string token = Request.Headers["Authorization"];
+            string[] tokenWords = token.Split(' ');
+            var payment = new PaymentCreateDto
+            {
+              CourseID = result.CourseID,
+              StudentID = result.StudentID,
+              EnrollmentID = result.EnrollmentID
+              
+            };
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", tokenWords[1]);
+            var json = JsonSerializer.Serialize(payment);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(_appSettings.PaymentService + "/api/p/Payments", data);
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("--> Sync POST to Payment Service was OK !");
+            }
+            else
+            {
+                Console.WriteLine("--> Sync POST to Payment Service failed");
+            }
+          }
+
+        }
+        return Ok(_mapper.Map<EnrollmentForCreateDto>(result));
+      }
+      catch (System.Exception ex)
+      {
+        Console.WriteLine(ex);
+        return BadRequest(ex.Message);
+      }
+
         } 
     }
 }
